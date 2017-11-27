@@ -48,8 +48,8 @@
                         $(`<img src="${this.result}">`).appendTo("body");
                     }
                 }
-        });
-
+            })
+        }
     };
     $.fn.fileup = function(opstion){
         return new Fileup(this,opstion);
