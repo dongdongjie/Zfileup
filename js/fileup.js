@@ -23,31 +23,90 @@
          */
         _initDom : function () {
             var $this = this;
-            $this.element.wrap("<div class='cover'></div>");
-            $this.element.css({
+            $this.element.wrap("<div class='cover'></div>").css({
                 width : "100%",
                 height : "100%",
                 opacity : "0"
             });
+            $this.element.parent(".cover").css("position","relative");
         },
         /**
-         * 点击文件上传
          * @private
+         * 点击文件上传
+         *
          */
         _onClickup : function () {
+            var $this = this;
             $this.element.on("change", function() {
-                // console.log(`file name is ${this.value}`);
-                // let formData = new FormData(this.form);
-                // formData.append("fileName", this.value);
-                // console.log(formData);
-                let fileReader = new FileReader(),
+                var fileReader = new FileReader(),
                     fileType = this.files[0].type;
-                fileReader.onload = function() {
-                    if (/^image/.test(fileType)) {
-                        // 读取结果在fileReader.result里面
-                        $(`<img src="${this.result}">`).appendTo("body");
+                if(this.files[0].size <= $this.ops.maxFileSize){
+                    // base64方式读取
+                    fileReader.readAsDataURL(this.files[0]);
+                    //判断是否开启了显示文件名配置
+                    if($this.ops.isShowName){
+                        $this._showFileName(this);
                     }
+                    //文件上传到浏览器成功
+                    fileReader.onload = function() {
+                        //如果是图片文件，将图片显示在cover中
+                        if (/^image/.test(fileType)) {
+                            // 读取结果在fileReader.result里面
+                            $this.element.parent().css({
+                                backgroundImage : "url("+ this.result +")",
+                                backgroundSize : "cover"
+                            })
+                        }
+                    }
+                }else{
+                    $this.element.parent(".cover").append("<div class='sizeError'>文件太大了</div>");
+                    $this.element.parent(".cover").find(".sizeError").css({
+                        position : "absolute",
+                        top : "0",
+                        left : "0",
+                        width : "100%",
+                        height : "20px",
+                        borderRadius : "5px",
+                        color : "#fff",
+                        textAlign : "center",
+                        lineHeight : "20px",
+                        backgroundColor : "rgba(230,0,0,0.5)"
+                    });
+                    setTimeout(function(){
+                        $this.element.parent(".cover").find(".sizeError").animate({
+                            top : "-100%"
+                        },function(){
+                            $this.element.parent(".cover").find(".sizeError").remove();
+                        });
+                    },2000)
                 }
+
+            })
+        },
+
+        /**
+         * @private
+         * 显示文件名
+         * 当用户设置显示文件名称的时候执行的方法
+         */
+        _showFileName : function(file){
+            var $this = this;
+            var filename = file.value.split("\\");
+            $this.element.parent().find(".file-name").remove();
+            $this.element.parent().append("<div class='file-name'>"+ filename[2] +"</div>");
+            $this.element.parent().find(".file-name").css({
+                position : "absolute",
+                top : "0",
+                left : "0",
+                boxSizing : "border-box",
+                maxWidth : "100%",
+                padding : "5px",
+                fontSize : "14px",
+                color : "#fff",
+                overflow : "hidden",
+                textOverflow : "ellipsis",
+                textWrap : "normal",
+                backgroundColor : "rgba(187,222,252,0.8)"
             })
         }
     };
@@ -55,6 +114,7 @@
         return new Fileup(this,opstion);
     };
     $.fn.fileup.default = {
-
+        isShowName : true,
+        maxFileSize : 92759
     };
 })(jQuery,window,document);

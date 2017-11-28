@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+    <title>无标题文档</title>
+    <script type="text/javascript">
+        function readFile()
+        {
+            var file=document.getElementById("file").files[0];
+            var result=document.getElementById("result");
+            var reader=new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload=function(e)
+            {
+                result.innerHTML='<img src="'+this.result+'" alt=""/>'
+                alert("onload");
+            }
+            reader.onprogress=function(e)
+            {
+                alert("onprogress");
+            }
+            reader.onloadstart=function(e)
+            {
+                alert("start");
+            }
+        }
+    </script>
+</head>
+
+<body>
+请选择文件：<input id="file" type="file" /><input type="button" value="显示图像" onclick="readFile();"/>
+
+<div id="result" name="result">
+</div>
+</body>
+</html>
