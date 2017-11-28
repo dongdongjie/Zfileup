@@ -37,7 +37,9 @@
          */
         _onClickup : function () {
             var $this = this;
-            $this.element.on("change", function() {
+            $this.element.on({click:function(){
+                console.log(this.files);
+            },change:function() {
                 var fileReader = new FileReader(),
                     fileType = this.files[0].type;
                 if(this.files[0].size <= $this.ops.maxFileSize){
@@ -59,29 +61,10 @@
                         }
                     }
                 }else{
-                    $this.element.parent(".cover").append("<div class='sizeError'>文件太大了</div>");
-                    $this.element.parent(".cover").find(".sizeError").css({
-                        position : "absolute",
-                        top : "0",
-                        left : "0",
-                        width : "100%",
-                        height : "20px",
-                        borderRadius : "5px",
-                        color : "#fff",
-                        textAlign : "center",
-                        lineHeight : "20px",
-                        backgroundColor : "rgba(230,0,0,0.5)"
-                    });
-                    setTimeout(function(){
-                        $this.element.parent(".cover").find(".sizeError").animate({
-                            top : "-100%"
-                        },function(){
-                            $this.element.parent(".cover").find(".sizeError").remove();
-                        });
-                    },2000)
+                    $this._fileSizeError();
                 }
 
-            })
+            }})
         },
 
         /**
@@ -108,6 +91,38 @@
                 textWrap : "normal",
                 backgroundColor : "rgba(187,222,252,0.8)"
             })
+        },
+
+        /**
+         * @private
+         * 上传的文件超过设置值时触发的事件
+         */
+        _fileSizeError : function(){
+            var $this = this;
+            $this.element.parent().find(".file-name").remove();
+            $this.element.parent(".cover").append("<div class='sizeError'>文件太大了</div>").css({
+                backgroundImage : "url(img/add.png)",
+                backgroundSize : "cover"
+            });
+            $this.element.parent(".cover").find(".sizeError").css({
+                position : "absolute",
+                top : "0",
+                left : "0",
+                width : "100%",
+                height : "20px",
+                borderRadius : "5px",
+                color : "#fff",
+                textAlign : "center",
+                lineHeight : "20px",
+                backgroundColor : "rgba(230,0,0,0.5)"
+            });
+            setTimeout(function(){
+                $this.element.parent(".cover").find(".sizeError").animate({
+                    top : "-100%"
+                },function(){
+                    $this.element.parent(".cover").find(".sizeError").remove();
+                });
+            },2000)
         }
     };
     $.fn.fileup = function(opstion){
