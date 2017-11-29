@@ -38,7 +38,7 @@
         _onClickup : function () {
             var $this = this;
             $this.element.on({click:function(){
-                console.log(this.files);
+                $(this).val("");
             },change:function() {
                 var fileReader = new FileReader(),
                     fileType = this.files[0].type;
