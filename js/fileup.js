@@ -42,6 +42,7 @@
             },change:function() {
                 var fileReader = new FileReader(),
                     fileType = this.files[0].type;
+                console.log(this.files[0]);
                 if(this.files[0].size <= $this.ops.maxFileSize){
                     // base64方式读取
                     fileReader.readAsDataURL(this.files[0]);
@@ -74,9 +75,8 @@
          */
         _showFileName : function(file){
             var $this = this;
-            var filename = file.value.split("\\");
             $this.element.parent().find(".file-name").remove();
-            $this.element.parent().append("<div class='file-name'>"+ filename[2] +"</div>");
+            $this.element.parent().append("<div class='file-name'>"+ file.files[0].name +"</div>");
             $this.element.parent().find(".file-name").css({
                 position : "absolute",
                 top : "0",
@@ -110,7 +110,7 @@
                 left : "0",
                 width : "100%",
                 height : "20px",
-                borderRadius : "5px",
+                // borderRadius : "5px",
                 color : "#fff",
                 textAlign : "center",
                 lineHeight : "20px",
