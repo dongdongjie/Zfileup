@@ -59,6 +59,11 @@
                                 backgroundImage : "url("+ this.result +")",
                                 backgroundSize : "cover"
                             })
+                        }else if(/^text/.test(fileType)){
+                            $this.element.parent().css({
+                                backgroundImage : "url(img/text.png)",
+                                backgroundSize : "cover"
+                            })
                         }
                     }
                 }else{
