@@ -58,24 +58,7 @@
                     }
                     //文件上传到浏览器成功
                     fileReader.onload = function() {
-                        //如果是图片文件，将图片显示在cover中
-                        if (/^image/.test(fileType)) {
-                            // 读取结果在fileReader.result里面
-                            $this.element.parent().css({
-                                backgroundImage : "url("+ this.result +")",
-                                backgroundSize : "cover"
-                            })
-                        }else if(/^text/.test(fileType)){
-                            $this.element.parent().css({
-                                backgroundImage : "url(img/text.png)",
-                                backgroundSize : "cover"
-                            })
-                        }else if(/^application/.test(fileType)){
-                            $this.element.parent().css({
-                                backgroundImage : "url(img/app.png)",
-                                backgroundSize : "cover"
-                            })
-                        }
+                       $this._showImg(fileType);
                     }
                 }else{
                     $this._fileSizeError();
@@ -107,6 +90,32 @@
                 textWrap : "normal",
                 backgroundColor : "rgba(187,222,252,0.8)"
             })
+        },
+        /**
+         * @private
+         * 根据提交的文件的类型，判断显示在前端的图片
+         * fileType 传入的文件类型
+         */
+        _showImg : function (fileType) {
+            var $this = this;
+            //如果是图片文件，将图片显示在cover中
+            if (/^image/.test(fileType)) {
+                // 读取结果在fileReader.result里面
+                $this.element.parent().css({
+                    backgroundImage : "url("+ this.result +")",
+                    backgroundSize : "cover"
+                })
+            }else if(/^text/.test(fileType)){
+                $this.element.parent().css({
+                    backgroundImage : "url(img/text.png)",
+                    backgroundSize : "cover"
+                })
+            }else if(/^application/.test(fileType)){
+                $this.element.parent().css({
+                    backgroundImage : "url(img/app.png)",
+                    backgroundSize : "cover"
+                })
+            }
         },
 
         /**
