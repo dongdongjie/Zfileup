@@ -28,7 +28,12 @@
                 height : "100%",
                 opacity : "0"
             });
-            $this.element.parent(".cover").css("position","relative");
+            $this.element.parent(".cover").css({
+                position : "relative",
+                border : "1px dashed #ccc",
+                backgroundImage : "url(img/add.png)",
+                backgroundSize : "cover"
+            });
         },
         /**
          * @private
@@ -41,7 +46,8 @@
                 $(this).val("");
             },change:function() {
                 var fileReader = new FileReader(),
-                    fileType = this.files[0].type;
+                    fileType = this.files[0].type,
+                    fileName = this.files[0].name;
                 console.log(this.files[0]);
                 if(this.files[0].size <= $this.ops.maxFileSize){
                     // base64方式读取
@@ -62,6 +68,11 @@
                         }else if(/^text/.test(fileType)){
                             $this.element.parent().css({
                                 backgroundImage : "url(img/text.png)",
+                                backgroundSize : "cover"
+                            })
+                        }else if(/^application/.test(fileType)){
+                            $this.element.parent().css({
+                                backgroundImage : "url(img/app.png)",
                                 backgroundSize : "cover"
                             })
                         }
@@ -86,8 +97,8 @@
                 position : "absolute",
                 top : "0",
                 left : "0",
-                boxSizing : "border-box",
                 maxWidth : "100%",
+                height : "14px",
                 padding : "5px",
                 fontSize : "14px",
                 color : "#fff",
@@ -135,6 +146,6 @@
     };
     $.fn.fileup.default = {
         isShowName : true,
-        maxFileSize : 92759
+        maxFileSize : 99999999
     };
 })(jQuery,window,document);
